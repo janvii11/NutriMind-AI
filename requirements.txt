@@ -1,0 +1,14 @@
+streamlit
+tensorflow
+keras
+numpy
+pandas
+opencv-python
+Pillow
+matplotlib
+plotly
+scikit-learn
+google-generativeai
+python-dotenv
+split-folders
+seaborn
