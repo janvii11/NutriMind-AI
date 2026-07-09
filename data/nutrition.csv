@@ -1,0 +1,21 @@
+Food_Name,Calories,Protein,Carbs,Fat,Fiber,Sugar,Vitamins,Minerals,Health_Score,Nutri_Score,Recommended_For,Avoid_For
+burger,295,17,30,14.0,2,5.0,B Vitamins,Iron,45,C,High-protein meals,Frequent fast-food intake
+butter_naan,320,9,48,10.0,2,4.0,B Vitamins,Iron,50,C,Active individuals,Low-carb diets
+chai,80,2,10,3.0,0,8.0,B Vitamins,Calcium,75,B,General consumption,High sugar intake
+chapati,120,4,20,2.0,3,1.0,B Vitamins,Iron,90,A,Balanced diets,Gluten sensitivity
+chole_bhature,450,15,55,18.0,8,10.0,Folate,Iron,55,C,High-energy meals,Weight-loss diets
+dal_makhani,330,12,30,15.0,10,4.0,B Vitamins,Iron,70,B,Protein-rich diets,Low-fat diets
+dhokla,160,8,25,3.0,4,3.0,B Vitamins,Iron,88,A,Healthy snacks,Very low-carb diets
+fried_rice,330,7,50,10.0,2,4.0,B Vitamins,Iron,55,C,Post-workout meals,Diabetic diets
+idli,58,2,12,0.4,1,0.2,B Vitamins,Calcium,92,A,Light meals,None
+jalebi,400,3,65,15.0,1,40.0,Minimal,Iron,30,D,Occasional treats,Diabetes management
+kaathi_rolls,320,12,35,12.0,3,5.0,B Vitamins,Iron,60,B,Moderate energy needs,Low-fat diets
+kadai_paneer,350,14,15,25.0,3,6.0,Vitamin A,Calcium,65,B,Vegetarian protein diets,Low-fat diets
+kulfi,220,5,25,10.0,0,20.0,Vitamin A,Calcium,45,C,Dessert occasionally,High sugar diets
+masala_dosa,250,6,40,8.0,3,4.0,B Vitamins,Iron,75,B,Breakfast,Strict low-carb diets
+momos,230,9,30,7.0,2,3.0,B Vitamins,Iron,70,B,Moderate meals,Refined flour sensitivity
+paani_puri,180,3,32,5.0,2,5.0,Vitamin C,Iron,50,C,Occasional snacks,Digestive issues
+pakode,310,6,28,18.0,3,2.0,Vitamin C,Iron,40,D,Occasional treats,Weight-loss diets
+pav_bhaji,400,10,50,15.0,6,8.0,Vitamin C,Iron,50,C,High-energy meals,Low-calorie diets
+pizza,285,12,36,10.0,2,4.0,Vitamin A,Calcium,45,C,Occasional meals,Weight-loss diets
+samosa,260,5,30,14.0,3,3.0,B Vitamins,Iron,35,D,Occasional snacks,Low-fat diets

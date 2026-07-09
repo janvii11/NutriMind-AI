@@ -1,0 +1,19 @@
+{
+    "name": "janvi ",
+    "age": 19,
+    "gender": "Female",
+    "height": 160,
+    "weight": 70,
+    "goal": "Weight Loss",
+    "activity": "Sedentary",
+    "disease": [
+        "PCOS"
+    ],
+    "allergy": "",
+    "diet": "Vegetarian",
+    "bmi": 27.3,
+    "bmi_status": "Overweight",
+    "bmr": 1444,
+    "tdee": 1733,
+    "target_calories": 1233
+}
