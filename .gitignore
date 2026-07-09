@@ -12,7 +12,5 @@ __pycache__/
 dataset/
 dataset_split/
 
-*.h5
-
 .streamlit/
 .env
