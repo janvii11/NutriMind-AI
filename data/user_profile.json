@@ -6,9 +6,7 @@
     "weight": 70,
     "goal": "Weight Loss",
     "activity": "Sedentary",
-    "disease": [
-        "PCOS"
-    ],
+    "disease": [],
     "allergy": "",
     "diet": "Vegetarian",
     "bmi": 27.3,

@@ -1,17 +1,26 @@
+import streamlit as st
+
+if not st.session_state.get("logged_in"):
+    st.warning("🔒 Please login first.")
+    st.stop()
 import sys
 from pathlib import Path
-
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-
 import streamlit as st
-from user_profile import save_profile, load_profile
+from firebase_db import save_profile, load_profile
+from session_manager import get_uid
 from styles import load_css
-
 load_css()
 
 st.title("👤 User Health Profile")
 
-profile = load_profile()
+uid = st.session_state.get("uid")
+if uid:
+    profile = load_profile(uid)
+else:
+    profile = None
+if profile is None:
+    profile = {}
 
 # ---------------- Personal Information ----------------
 
@@ -164,7 +173,13 @@ if st.button("💾 Save Profile", use_container_width=True):
         "target_calories": target_calories
     }
 
-    save_profile(profile)
+    uid = st.session_state.get("uid")
+
+    if uid:
+        save_profile(uid, profile)
+        st.success("✅ Profile saved to Firebase")
+    else:
+        st.error("Please login first.")
 
     st.success("✅ Profile Saved Successfully!")
 

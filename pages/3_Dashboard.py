@@ -1,12 +1,24 @@
 import streamlit as st
 import pandas as pd
-import os
 import plotly.express as px
-import json
 import plotly.graph_objects as go
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from firebase_db import (
+    get_meals_dataframe,
+    load_profile
+)
+
+from session_manager import get_uid
 from styles import load_css
 
+if not st.session_state.get("logged_in"):
+    st.warning("🔒 Please login first.")
+    st.stop()
 load_css()
+
 st.markdown("""
 <h1 style='text-align:center;
 color:#00E5FF;
@@ -23,23 +35,18 @@ Track • Analyze • Improve Your Nutrition
 
 st.divider()
 
-from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+uid = get_uid()
 
-FILE_NAME = BASE_DIR / "data" / "meal_history.csv"
-PROFILE_FILE = "user_profile.json"
+if not uid:
+    st.error("Please login again.")
+    st.stop()
 
-def load_profile():
-    try:
-        with open(PROFILE_FILE, "r") as f:
-            return json.load(f)
-    except:
-        return {}
-if os.path.exists(FILE_NAME):
+df = get_meals_dataframe(uid)
+profile = load_profile(uid) or {}
 
-    df = pd.read_csv(FILE_NAME)
-    profile = load_profile()
+if not df.empty:
+
 
     bmr = profile.get("bmr", 1800)
     goal = profile.get("goal", "Maintain Weight")
@@ -101,6 +108,7 @@ if os.path.exists(FILE_NAME):
 
     # Calories by Date
     df["Date"] = pd.to_datetime(df["Date"]).dt.date
+    df = df.sort_values("Date")
     daily_calories = (
         df.groupby("Date", as_index=False)["Calories"]
         .sum()
@@ -182,12 +190,16 @@ if os.path.exists(FILE_NAME):
     today = pd.Timestamp.today().date()
 
     today_df = df[df["Date"] == today]
+    today_df = today_df.fillna(0)
 
     calories = today_df["Calories"].sum()
     protein = today_df["Protein"].sum()
     carbs = today_df["Carbs"].sum()
     fat = today_df["Fat"].sum()
-
+    calories = float(calories)
+    protein = float(protein)
+    carbs = float(carbs)
+    fat = float(fat)
     meals = len(today_df)
 
     cards = [

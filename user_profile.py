@@ -1,15 +1,23 @@
-import json
-import os
-from pathlib import Path
-BASE_DIR = Path(__file__).resolve().parent
-FILE_NAME = BASE_DIR / "data" / "user_profile.json"
+from firebase_config import db
 
-def save_profile(profile):
-    with open(FILE_NAME, "w") as f:
-        json.dump(profile, f, indent=4)
+# ---------------- SAVE PROFILE ----------------
 
-def load_profile():
-    if os.path.exists(FILE_NAME):
-        with open(FILE_NAME, "r") as f:
-            return json.load(f)
-    return None
+def save_profile(uid, profile):
+
+    db.collection("users") \
+      .document(uid) \
+      .set(profile, merge=True)
+
+
+# ---------------- LOAD PROFILE ----------------
+
+def load_profile(uid):
+
+    doc = db.collection("users") \
+            .document(uid) \
+            .get()
+
+    if doc.exists:
+        return doc.to_dict()
+
+    return {}

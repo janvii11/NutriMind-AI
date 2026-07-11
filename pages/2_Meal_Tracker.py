@@ -1,21 +1,31 @@
 import streamlit as st
-import pandas as pd
-import os
-from styles import load_css
 
+if not st.session_state.get("logged_in"):
+    st.warning("🔒 Please login first.")
+    st.stop()
+import streamlit as st
+import pandas as pd
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from styles import load_css
+from firebase_db import (
+    get_meals_dataframe,
+    delete_meals
+)
+from session_manager import get_uid
 load_css()
 
 st.title("🍽 Meal Tracker")
+uid = get_uid()
 
-from pathlib import Path
+if not uid:
+    st.error("Please login again.")
+    st.stop()
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+df = get_meals_dataframe(uid)
 
-FILE_NAME = BASE_DIR / "data" / "meal_history.csv"
-
-if os.path.exists(FILE_NAME):
-
-    df = pd.read_csv(FILE_NAME)
+if not df.empty:
     st.subheader("🍽 Today's Meals")
 
     today = pd.Timestamp.today().strftime("%Y-%m-%d")
@@ -54,21 +64,20 @@ if os.path.exists(FILE_NAME):
     with col2:
         st.metric("🔥 Total Calories", f"{df['Calories'].sum():.0f} kcal")
 
-        st.divider()
+    st.divider()
 
-        st.subheader("🍽 Meal History")
+    st.subheader("🍽 Meal History")
 
-        st.dataframe(df, use_container_width=True)
-        st.divider()
+    st.dataframe(df, use_container_width=True)
+    st.divider()
 
     if st.button("🗑 Reset Meal History"):
 
-        os.remove(FILE_NAME)
+        delete_meals(uid)
 
         st.success("✅ Meal history deleted successfully!")
 
         st.rerun()
 
 else:
-
-    st.info("No meals recorded yet.")
+    st.info("🍽 No meals recorded yet.")

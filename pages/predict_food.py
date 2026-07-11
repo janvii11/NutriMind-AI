@@ -1,22 +1,27 @@
+import streamlit as st
 import sys
 import time
 from pathlib import Path
-
-sys.path.append(str(Path(__file__).resolve().parent.parent))
-from gemini_food import predict_unknown_food
-from ai_coach import get_ai_advice
-import streamlit as st
 from PIL import Image
+if not st.session_state.get("logged_in"):
+    st.warning("🔒 Please login first.")
+    st.stop()
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 from predict import predict_food
 from nutrition import get_nutrition
+from gemini_food import predict_unknown_food
+from ai_coach import get_ai_advice
 from alternatives import get_alternatives
-from meal_tracker import save_meal
+from firebase_db import save_meal
 from portion import estimate_portion
 from meal_risk import meal_risk
+from session_manager import get_uid
 from styles import load_css
 
 load_css()
+
 start = time.time()
+
 st.markdown("""
 <div style="
 background:linear-gradient(135deg,#00416A,#1E88E5);
@@ -49,14 +54,13 @@ if uploaded_file is not None:
     col1, col2 = st.columns(2)
 
     with col1:
-       st.markdown("""
+        st.markdown("""
         <h3 style='text-align:center;'>📷 Uploaded Image</h3>
         """, unsafe_allow_html=True)
-
-    st.image(
+        st.image(
             img,
             use_container_width=True
-    ) 
+        ) 
     with st.spinner("🤖 AI is analyzing your food..."):
         food, confidence, top3 = predict_food(img)
     # ---------------- Gemini Fallback ----------------
@@ -132,10 +136,10 @@ if uploaded_file is not None:
             """, unsafe_allow_html=True)
 
             st.info("""
-            Prediction Source : **Gemini AI**
+        Prediction Source : **Gemini AI**
 
-            Reason : The uploaded food was not confidently recognized by the CNN model,
-            so Gemini Vision analyzed the image automatically.
+        Reason : The uploaded food was not confidently recognized by the CNN model,
+        so Gemini Vision analyzed the image automatically.
             """)
 
             st.write(f"Possible Food: **{food.replace('_',' ').title()}**")
@@ -143,7 +147,11 @@ if uploaded_file is not None:
 
             st.write(f"Confidence: **{confidence:.2f}%**")
 
-            st.info("This food may not be present in the trained dataset. The prediction is only an estimate.")
+            st.info(
+                "This food may not be present in the trained dataset. "
+                "The prediction is only an estimate."
+            )
+
             st.write("### 🍽 Choose Closest Food")
 
             options = [
@@ -174,25 +182,16 @@ if uploaded_file is not None:
             """, unsafe_allow_html=True)
 
             st.info("""
-            Prediction Source : **CNN (EfficientNet)**
+        Prediction Source : **CNN (EfficientNet)**
 
-            High confidence prediction from the trained food classification model.
+        High confidence prediction from the trained food classification model.
             """)
-            info = get_nutrition(food)
-            portion = estimate_portion(confidence)
-
-            info["Calories"] = round(info["Calories"] * portion)
-            info["Protein"] = round(info["Protein"] * portion, 1)
-            info["Carbs"] = round(info["Carbs"] * portion, 1)
-            info["Fat"] = round(info["Fat"] * portion, 1)
+        
         end = time.time()
 
         st.caption(
             f"⏱ Analysis Time : {end-start:.2f} sec"
         )
-    # Save meal in CSV
-            # save_meal(food, info["Calories"])
-
         st.markdown(f"""
         <div style="
         background:linear-gradient(135deg,#0F4C81,#0066CC);
@@ -312,9 +311,7 @@ if uploaded_file is not None:
         st.divider()
 
         st.markdown("## 💡 Healthier Alternatives")
-
         alternatives = get_alternatives(food)
-
         if alternatives:
 
             for alt in alternatives:
@@ -338,7 +335,7 @@ if uploaded_file is not None:
             st.error("🔴 HIGH RISK")
 
         for reason in reasons:
-                st.write("✔", reason)
+            st.write("✔", reason)
 
         st.markdown("## 🤖 AI Nutrition Coach")
 
@@ -356,24 +353,26 @@ if uploaded_file is not None:
             key="meal_type_predict"
         )
 
-    if st.button(
-        "✅ Save Meal",
-        key="save_meal_btn"
-    ):
+        if st.button(
+            "✅ Save Meal",
+            key="save_meal_btn"
+        ):
+            uid = get_uid()
 
-        selected_food = food
-        if gemini_used:
-            st.success(f"🤖 Gemini identified: {food}")
-            st.info(result["advice"])
-        portion = estimate_portion(confidence)
+            if not uid:
+                st.error("Please login again.")
+                st.stop()
 
-        info["Calories"] = round(info["Calories"] * portion)
-        info["Protein"] = round(info["Protein"] * portion, 1)
-        info["Carbs"] = round(info["Carbs"] * portion, 1)
-        info["Fat"] = round(info["Fat"] * portion, 1)
-        save_meal(food, info, meal_type)
+            if gemini_used:
+                st.success(f"🤖 Gemini identified: {food}")
+                st.info(result.get("advice", "No AI advice available."))
+            save_meal(
+                uid,
+                food,
+                info,
+                meal_type
+            )
 
-        st.success("✅ Meal Saved Successfully!")
-
-        st.balloons()
+            st.success("✅ Meal Saved Successfully!")
+            st.balloons()
 

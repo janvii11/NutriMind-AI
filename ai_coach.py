@@ -1,9 +1,16 @@
-from user_profile import load_profile
-
-
+from firebase_db import load_profile
+from session_manager import get_uid
 def get_ai_advice(food, info):
 
-    profile = load_profile()
+    uid = get_uid()
+
+    if uid:
+        profile = load_profile(uid)
+    else:
+        profile = {}
+
+    if profile is None:
+        profile = {}
 
     advice = []
 

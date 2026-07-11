@@ -18,6 +18,13 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+with st.sidebar:
+
+    st.divider()
+
+    if st.button("🚪 Logout", use_container_width=True):
+        st.session_state.clear()
+        st.rerun()
 PROFILE_FILE = "user_profile.json"
 BASE_DIR = Path(__file__).resolve().parent
 MEAL_FILE = BASE_DIR / "data" / "meal_history.csv"

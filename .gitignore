@@ -14,3 +14,5 @@ dataset_split/
 
 .streamlit/
 .env
+firebase_key.json
+data/user_profile.json

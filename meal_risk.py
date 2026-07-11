@@ -1,9 +1,17 @@
-from user_profile import load_profile
+import streamlit as st
+from firebase_db import load_profile
 
 
 def meal_risk(info):
 
-    profile = load_profile()
+    uid = st.session_state.get("uid")
+
+    if uid:
+        profile = load_profile(uid)
+    else:
+        profile = {}
+    if profile is None:
+        profile = {}
 
     risk = 0
 
