@@ -12,3 +12,5 @@ google-generativeai
 python-dotenv
 split-folders
 seaborn
+firebase-admin
+pyrebase4
