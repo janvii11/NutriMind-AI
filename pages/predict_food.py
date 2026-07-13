@@ -294,7 +294,7 @@ if uploaded_file is not None:
 
             st.markdown(f"""
             <div style="
-            background:{colors[grade]};
+            background:{colors.get(grade, '#FFFFFF')};
             padding:25px;
             border-radius:18px;
             color:white;
