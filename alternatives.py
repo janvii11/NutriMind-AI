@@ -29,7 +29,6 @@ Do not use ```json.
 
         text = response.text.strip()
 
-        # remove markdown if Gemini adds it
         text = text.replace("```json", "")
         text = text.replace("```", "")
 
@@ -40,7 +39,5 @@ Do not use ```json.
     except Exception as e:
 
         print("Alternative Error:", e)
-
-        print(response.text)
 
         return []

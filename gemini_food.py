@@ -1,15 +1,15 @@
 import os
 import json
+import traceback
 from PIL import Image
 from dotenv import load_dotenv
 import google.generativeai as genai
 
-# Load API Key
 load_dotenv()
 
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-model = genai.GenerativeModel("gemini-2.5-flash")
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 
 def predict_unknown_food(img):
@@ -31,31 +31,37 @@ Return ONLY valid JSON.
     "nutri_score":"",
     "advice":""
 }
-
-Rules:
-- Identify the food.
-- Estimate one serving.
-- Calories should be realistic.
-- Protein, carbs and fat should also be realistic.
-- Health score should be between 0-100.
-- Nutri score should be A/B/C/D/E.
-- Return ONLY JSON.
 """
 
-    response = model.generate_content([prompt, img])
+    try:
 
-    text = response.text.strip()
+        response = model.generate_content([prompt, img])
 
-    if text.startswith("```"):
+        text = response.text.strip()
+
         text = text.replace("```json", "")
         text = text.replace("```", "")
-        text = text.strip()
 
-    return json.loads(text)
-if __name__ == "__main__":
+        return json.loads(text)
 
-    img = Image.open(r"C:\Users\Janvi\Desktop\nmai\datasset\food\Food Classification\WhatsApp Image 2026-07-04 at 9.41.00 AM.jpeg")
+    
 
-    result = predict_unknown_food(img)
+    except Exception as e:
+        print("=" * 50)
+        print(type(e))
+        print(e)
+        traceback.print_exc()
+        print("=" * 50)
 
-    print(result)
+        return {
+        "food_name": "Unknown Food",
+        "calories": 0,
+        "protein": 0,
+        "carbs": 0,
+        "fat": 0,
+        "health_score": 0,
+        "nutri_score": "N/A",
+        "advice": "AI unavailable."
+    }
+
+        
