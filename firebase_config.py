@@ -8,9 +8,7 @@ if not firebase_admin._apps:
     try:
         
 
-        st.write(type(st.secrets["FIREBASE_KEY"]))
-        st.write(st.secrets["FIREBASE_KEY"].keys())
-        st.stop()
+        
         # Streamlit Cloud
         cred = credentials.Certificate(dict(st.secrets["FIREBASE_KEY"]))
 

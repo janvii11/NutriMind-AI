@@ -6,7 +6,6 @@ if not st.session_state.get("logged_in"):
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-import streamlit as st
 from firebase_db import save_profile, load_profile
 from session_manager import get_uid
 from styles import load_css
