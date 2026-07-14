@@ -12,6 +12,7 @@ from nutrition import get_nutrition
 from gemini_food import predict_unknown_food
 from ai_coach import get_ai_advice
 from alternatives import get_alternatives
+from food_alternatives import ALTERNATIVES
 from firebase_db import save_meal
 from portion import estimate_portion
 from meal_risk import meal_risk
@@ -66,7 +67,7 @@ if uploaded_file is not None:
     # ---------------- Gemini Fallback ----------------
     if confidence < 75:
 
-        st.info("🤖 Low confidence detected. Using Gemini Vision...")
+        st.info("🤖 Low confidence detected. Using AI Vision...")
 
         result = predict_unknown_food(img)
 
@@ -130,15 +131,15 @@ if uploaded_file is not None:
             font-size:18px;
             font-weight:bold;
             ">
-            🤖 Gemini Vision Analysis
+            🤖 AI Vision Analysis
             </div>
             """, unsafe_allow_html=True)
 
             st.info("""
-        Prediction Source : **Gemini AI**
+        Prediction Source : **AI**
 
         Reason : The uploaded food was not confidently recognized by the CNN model,
-        so Gemini Vision analyzed the image automatically.
+        so AI Vision analyzed the image automatically.
             """)
 
             st.write(f"Possible Food: **{food.replace('_',' ').title()}**")
@@ -310,11 +311,25 @@ if uploaded_file is not None:
         st.divider()
 
         st.markdown("## 💡 Healthier Alternatives")
-        alternatives = get_alternatives(food)
+
+# Known foods → Local alternatives
+        if not gemini_used:
+
+            alternatives = ALTERNATIVES.get(food, [])
+
+# Unknown foods → AI alternatives
+        else:
+
+            alternatives = get_alternatives(food)
+
         if alternatives:
 
             for alt in alternatives:
                 st.success("✅ " + alt.replace("_", " ").title())
+
+        else:
+
+            st.info("No healthier alternatives available.")
 
 
         st.divider()
@@ -363,7 +378,7 @@ if uploaded_file is not None:
                 st.stop()
 
             if gemini_used:
-                st.success(f"🤖 Gemini identified: {food}")
+                st.success(f"🤖 AI identified: {food}")
                 st.info(result.get("advice", "No AI advice available."))
             save_meal(
                 uid,

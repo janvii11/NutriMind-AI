@@ -5,10 +5,6 @@ import pandas as pd
 from PIL import Image
 from pathlib import Path
 logo = Image.open("asset/logo.png")
-from predict import predict_food
-from nutrition import get_nutrition
-from meal_tracker import save_meal
-from alternatives import get_alternatives
 from styles import load_css
 
 load_css()
@@ -137,7 +133,7 @@ st.markdown("""
 </h1>
 """, unsafe_allow_html=True)
 
-st.success("🚀 Choose any page from the sidebar to start your AI nutrition journey.")
+st.info("👈 Use the sidebar to explore Food Recognition, Dashboard, Meal Tracker and Profile.")
 
 col1, col2 = st.columns(2)
 
@@ -208,22 +204,6 @@ with st.sidebar:
 
     </div>
     """, unsafe_allow_html=True)
-
-    st.markdown("""
-    ### 📌 Quick Navigation
-
-    🏠 Home
-
-    📷 Food Recognition
-
-    👤 User Profile
-
-    📊 Dashboard
-
-    🍽 Meal Tracker
-
-    🥗 Compare Foods
-    """)
 
     st.divider()
 
