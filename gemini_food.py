@@ -36,7 +36,7 @@ Return ONLY valid JSON.
     try:
 
         response = model.generate_content([prompt, img])
-
+        print(response.text)
         text = response.text.strip()
 
         text = text.replace("```json", "")
