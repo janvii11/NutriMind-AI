@@ -64,9 +64,6 @@ if uploaded_file is not None:
     with st.spinner("🤖 AI is analyzing your food..."):
         food, confidence, top3 = predict_food(img)
     # ---------------- Gemini Fallback ----------------
-        st.write("Food:", food)
-        st.write("Confidence:", confidence)
-        st.write("Top3:", top3)
     if confidence < 75:
 
         st.info("🤖 Low confidence detected. Using Gemini Vision...")
