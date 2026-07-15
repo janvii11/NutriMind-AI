@@ -150,7 +150,7 @@ with col1:
     <h2>📷 Food Recognition</h2>
 
     ✔ AI Food Detection<br>
-    ✔ Gemini Vision<br>
+    ✔ AI Vision<br>
     ✔ Nutrition Analysis<br>
     ✔ Health Score<br>
     ✔ Meal Risk Analysis
@@ -212,7 +212,7 @@ with st.sidebar:
 st.markdown("""
 <div style='text-align:center;color:gray;'>
 
-Made with ❤️ using <b>TensorFlow • Gemini AI • Streamlit</b>
+Made with ❤️ using <b>TensorFlow • AI • Streamlit</b>
 
 </div>
 """, unsafe_allow_html=True)
