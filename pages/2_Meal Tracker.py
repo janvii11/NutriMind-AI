@@ -35,39 +35,16 @@ max-width:1200px;
 </style>
 """, unsafe_allow_html=True)
 st.markdown("""
-<div style="
-background:linear-gradient(135deg,#F6FFF5,#ECF9EC,#DDF5D8);
-padding:45px;
-border-radius:28px;
-box-shadow:0 12px 30px rgba(46,125,50,.12);
-margin-bottom:30px;
-text-align:center;
-">
+<div style="background:linear-gradient(135deg,#F6FFF5,#ECF9EC,#DDF5D8);padding:45px;border-radius:28px;box-shadow:0 12px 30px rgba(46,125,50,.12);margin-bottom:30px;text-align:center;">
 
-<div style="
-font-size:58px;
-margin-bottom:10px;
-">
-🍽
-</div>
+<div style="font-size:58px;margin-bottom:10px;">🍽</div>
 
-<h1 style="
-color:#14532D;
-font-size:44px;
-font-weight:800;
-margin-bottom:12px;
-">
+<h1 style="color:#14532D;font-size:44px;font-weight:800;margin-bottom:12px;">
 Meal Tracker
 </h1>
 
-<p style="
-font-size:18px;
-color:#4B6353;
-max-width:650px;
-margin:auto;
-line-height:1.7;
-">
-Monitor your daily meals, calories and nutrition progress with your personal AI meal journal.
+<p style="font-size:18px;color:#4B6353;max-width:650px;margin:auto;line-height:1.7;">
+ Monitor your daily meals, calories and nutrition progress with your personal AI meal journal.
 </p>
 
 </div>
@@ -101,28 +78,11 @@ if not df.empty:
         for _, row in today_df.iterrows():
 
             st.markdown(f"""
-            <div style="
-                background:white;
-                color:#1F2937;
-                border-left:8px solid #43A047;
-                box-shadow:0 10px 25px rgba(46,125,50,.10);
-                border-radius:22px;
-                padding:18px;
-                margin-bottom:12px;
-            ">
-                <h3 style="
-                color:#14532D;
-                margin-bottom:10px;
-                font-weight:800;
-                ">
+            <div style="background:white;color:#1F2937;border-left:8px solid #43A047;box-shadow:0 10px 25px rgba(46,125,50,.10);border-radius:22px;padding:18px;margin-bottom:12px;">
+                <h3 style="color:#14532D;margin-bottom:10px;font-weight:800;">
                 🍽 {row['Meal_Type']}
                 </h3>
-                <p style="
-                font-size:20px;
-                font-weight:700;
-                margin:8px 0;
-                color:#1F2937;
-                ">
+                <p style="font-size:20px;font-weight:700;margin:8px 0;color:#1F2937;">
                 {row['Food'].replace('_',' ').title()}
                 </p>
 
@@ -147,42 +107,23 @@ if not df.empty:
 
     with col1:
         st.markdown(f"""
-        <div style="
-        background:#FFFFFF;
-        border:1px solid #E3F2E5;
-        padding:25px;
-        border-radius:22px;
-        text-align:center;
-        box-shadow:0 10px 25px rgba(46,125,50,.10);
-        ">
+        <div style="background:#FFFFFF;border:1px solid #E3F2E5;padding:25px;border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(46,125,50,.10);">
 
-        <h3 style="color:#43A047;">🍽 Total Meals</h3>
+            <h3 style="color:#43A047;">🍽 Total Meals</h3>
 
-        <h1 style="color:#14532D;">{len(df)}</h1>
+            <h1 style="color:#14532D;">{len(df)}</h1>
 
         </div>
         """, unsafe_allow_html=True)
 
     with col2:
         st.markdown(f"""
-        <div style="
-        background:#FFFFFF;
-        border:1px solid #E3F2E5;
-        padding:25px;
-        border-radius:22px;
-        text-align:center;
-        box-shadow:0 10px 25px rgba(46,125,50,.10);
-        ">
+        <div style="background:#FFFFFF;border:1px solid #E3F2E5;padding:25px;border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(46,125,50,.10);">
 
-        <h3 style="color:#43A047;">🔥 Calories</h3>
+            <h3 style="color:#43A047;">🔥 Calories</h3>
 
-        <h1 style="color:#14532D;">
-        {df['Calories'].sum():.0f}
-        </h1>
-
-        <p style="color:#6B7280;">
-        kcal
-        </p>
+            <h1 style="color:#14532D;">{df['Calories'].sum():.0f}</h1>
+            <p style="color:#6B7280;">kcal</p>
 
         </div>
         """, unsafe_allow_html=True)
