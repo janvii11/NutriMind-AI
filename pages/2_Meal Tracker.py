@@ -77,20 +77,16 @@ if not df.empty:
 
         for _, row in today_df.iterrows():
 
-            st.markdown(f"""
-            <div style="background:white;color:#1F2937;border-left:8px solid #43A047;box-shadow:0 10px 25px rgba(46,125,50,.10);border-radius:22px;padding:18px;margin-bottom:12px;">
-                <h3 style="color:#14532D;margin-bottom:10px;font-weight:800;">
-                🍽 {row['Meal_Type']}
-                </h3>
-                <p style="font-size:20px;font-weight:700;margin:8px 0;color:#1F2937;">
-                {row['Food'].replace('_',' ').title()}
-                </p>
+            html_card = (
+            f'<div style="background:white;color:#1F2937;border-left:8px solid #43A047;'
+            f'box-shadow:0 10px 25px rgba(46,125,50,.10);border-radius:22px;padding:18px;margin-bottom:12px;">'
+            f'<h3 style="color:#14532D;margin-bottom:10px;font-weight:800;">🍽 {row["Meal_Type"]}</h3>'
+            f'<p style="font-size:20px;font-weight:700;margin:8px 0;color:#1F2937;">{row["Food"].replace("_"," ").title()}</p>'
 
-                <p style="color:#43A047;font-size:17px;font-weight:700;">
-                🔥 {row['Calories']} kcal
-                </p>
-            </div>
-            """, unsafe_allow_html=True)
+            f'<p style="color:#43A047;font-size:17px;font-weight:700;">🔥 {row["Calories"]} kcal</p>'
+            f'</div>'
+            )
+            st.markdown(html_card, unsafe_allow_html=True)
 
     st.divider()
 
@@ -106,27 +102,31 @@ if not df.empty:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.markdown(f"""
-        <div style="background:#FFFFFF;border:1px solid #E3F2E5;padding:25px;border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(46,125,50,.10);">
+        html_meals = (
+        f'<div style="background:#FFFFFF;border:1px solid #E3F2E5;padding:25px;'
+        f'border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(46,125,50,.10);">'
 
-            <h3 style="color:#43A047;">🍽 Total Meals</h3>
+        f'<h3 style="color:#43A047;">🍽 Total Meals</h3>'
 
-            <h1 style="color:#14532D;">{len(df)}</h1>
+        f'<h1 style="color:#14532D;">{len(df)}</h1>'
 
-        </div>
-        """, unsafe_allow_html=True)
+        f'</div>'
+        )
+        st.markdown(html_meals, unsafe_allow_html=True)
 
     with col2:
-        st.markdown(f"""
-        <div style="background:#FFFFFF;border:1px solid #E3F2E5;padding:25px;border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(46,125,50,.10);">
+        html_calories = (
+        f'<div style="background:#FFFFFF;border:1px solid #E3F2E5;padding:25px;'
+        f'border-radius:22px;text-align:center;box-shadow:0 10px 25px rgba(46,125,50,.10);">'
 
-            <h3 style="color:#43A047;">🔥 Calories</h3>
+        f'<h3 style="color:#43A047;">🔥 Calories</h3>'
 
-            <h1 style="color:#14532D;">{df['Calories'].sum():.0f}</h1>
-            <p style="color:#6B7280;">kcal</p>
+        f'<h1 style="color:#14532D;">{df["Calories"].sum():.0f}</h1>'
+        f'<p style="color:#6B7280;">kcal</p>'
 
-        </div>
-        """, unsafe_allow_html=True)
+        f'</div>'
+        )
+        st.markdown(html_calories, unsafe_allow_html=True)
 
     st.divider()
 
