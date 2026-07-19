@@ -126,11 +126,7 @@ if not df.empty:
                 {row['Food'].replace('_',' ').title()}
                 </p>
 
-                <p style="
-                color:#43A047;
-                font-size:17px;
-                font-weight:700;
-                ">
+                <p style="color:#43A047;font-size:17px;font-weight:700;">
                 🔥 {row['Calories']} kcal
                 </p>
             </div>
