@@ -11,7 +11,38 @@ from session_manager import get_uid
 from styles import load_css
 load_css()
 
-st.title("👤 User Health Profile")
+st.markdown("""
+<div style="
+background:linear-gradient(135deg,#F3FAF3,#E8F5E9,#DDF5D8);
+padding:35px;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(46,125,50,.10);
+margin-bottom:25px;
+">
+
+<h1 style="
+text-align:center;
+color:#14532D;
+font-size:42px;
+font-weight:900;
+">
+
+👤 User Health Profile
+
+</h1>
+
+<p style="
+text-align:center;
+color:#355E3B;
+font-size:18px;
+">
+
+Manage your health profile & personalize your nutrition journey.
+
+</p>
+
+</div>
+""", unsafe_allow_html=True)
 
 uid = st.session_state.get("uid")
 if uid:
@@ -22,7 +53,19 @@ if profile is None:
     profile = {}
 
 # ---------------- Personal Information ----------------
-
+st.markdown("""
+<div style="
+background:white;
+padding:30px;
+border-radius:20px;
+border:1px solid #E8F5E9;
+box-shadow:0 8px 20px rgba(46,125,50,.08);
+margin-bottom:20px;
+">
+<h3 style="color:#14532D;">
+📝 Personal Information
+</h3>
+""", unsafe_allow_html=True)
 name = st.text_input(
     "Name",
     value=profile.get("name", "") if profile else ""
@@ -97,7 +140,7 @@ diet = st.selectbox(
         "Non Vegetarian"
     ]
 )
-
+st.markdown("</div>", unsafe_allow_html=True)
 st.divider()
 
 if st.button("💾 Save Profile", use_container_width=True):

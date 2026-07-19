@@ -1,19 +1,21 @@
 import streamlit as st
-import json
-import os
-import pandas as pd
-from PIL import Image
-from pathlib import Path
-logo = Image.open("asset/logo.png")
-from styles import load_css
-
-load_css()
 st.set_page_config(
     page_title="NutriMind AI",
     page_icon="🥗",
     layout="wide",
     initial_sidebar_state="expanded"
 )
+from styles import load_css
+
+load_css()
+import json
+import os
+import pandas as pd
+from firebase_db import get_meals_dataframe, load_profile
+from session_manager import get_uid
+from PIL import Image
+from pathlib import Path
+logo = Image.open("asset/logo.png")
 with st.sidebar:
 
     st.divider()
@@ -21,69 +23,80 @@ with st.sidebar:
     if st.button("🚪 Logout", use_container_width=True):
         st.session_state.clear()
         st.rerun()
-PROFILE_FILE = "user_profile.json"
-BASE_DIR = Path(__file__).resolve().parent
-MEAL_FILE = BASE_DIR / "data" / "meal_history.csv"
+uid = get_uid()
+profile = {}
 
-def load_profile():
-    if os.path.exists(PROFILE_FILE):
-        with open(PROFILE_FILE, "r") as f:
-            return json.load(f)
-    return {}
-
-profile = load_profile()
+if uid:
+    profile = load_profile(uid) or {}
 today_meals = 0
 today_calories = 0
 today_protein = 0
 
-if os.path.exists(MEAL_FILE):
+if uid:
+    df = get_meals_dataframe(uid)
 
-    df = pd.read_csv(MEAL_FILE)
+    if not df.empty:
+        df["Date"] = pd.to_datetime(df["Date"]).dt.date
 
-    # Convert Date column
-    df["Date"] = pd.to_datetime(df["Date"]).dt.date
+        today = pd.Timestamp.today().date()
 
-    today = pd.Timestamp.today().date()
+        today_df = df[df["Date"] == today]
 
-    today_df = df[df["Date"] == today]
+        today_meals = len(today_df)
+        today_calories = today_df["Calories"].sum()
+        today_protein = today_df["Protein"].sum()
+st.markdown("""
+<div style="
+background:linear-gradient(135deg,#F3FAF3,#E8F5E9,#DDF5D8);
+padding:40px;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(46,125,50,.10);
+margin-bottom:25px;
+">
 
-    today_meals = len(df)
+<h1 style="
+text-align:center;
+color:#14532D;
+font-size:50px;
+font-weight:900;
+">
 
-    today_calories = df["Calories"].sum()
+🥗 NutriMind AI
 
-    today_protein = df["Protein"].sum()
-    st.markdown("""
-    <div style="
-    background: linear-gradient(135deg,#0F172A,#1E3A8A,#2563EB);
-    padding:40px;
-    border-radius:22px;
-    text-align:center;
-    margin-bottom:20px;
-    box-shadow:0px 8px 25px rgba(0,0,0,0.35);
-    ">
+</h1>
 
-    <h1 style="color:white;font-size:50px;margin-bottom:8px;">
-    🥗 NutriMind AI
-    </h1>
+<p style="
+text-align:center;
+font-size:20px;
+color:#355E3B;
+">
 
-    <h3 style="color:#E2E8F0;font-weight:400;">
-    AI Powered Smart Food Recognition & Nutrition Intelligence Platform
-    </h3>
+Smart Food Recognition & Nutrition Intelligence Platform
 
-    <p style="color:#CBD5E1;font-size:18px;">
-    🍽 Identify Food • 📊 Track Nutrition • 🤖 AI Coach • ❤️ Live Health Insights
-    </p>
+</p>
 
-    </div>
-    """, unsafe_allow_html=True)
+<p style="
+text-align:center;
+font-size:17px;
+color:#5B7A5E;
+">
+
+🍽 Identify Food • 📊 Analyze Nutrition • 🤖 AI Coach • ❤️ Stay Healthy
+
+</p>
+
+</div>
+""", unsafe_allow_html=True)
 if profile:
 
     st.markdown(f"""
     <div style="
-    background:linear-gradient(135deg,#0D47A1,#1976D2);
+    background:white;
+    border-left:8px solid #43A047;
+    box-shadow:0 8px 20px rgba(46,125,50,.08);  
     padding:18px;
     border-radius:15px;
-    color:white;
+    color:#14532D;
     text-align:center;
     font-size:24px;
     ">
@@ -126,7 +139,12 @@ with col3:
 st.divider()
 
 st.markdown("""
-<h1 style='color:#1565C0;text-align:center;'>
+<h1 style='
+text-align:center;
+color:#14532D;
+font-size:42px;
+font-weight:900;
+'>
 
 🥗 Welcome to NutriMind AI
 
@@ -141,10 +159,12 @@ with col1:
 
     st.markdown("""
     <div style="
-    background:#1E3A5F;
+    background:white;
+    border-left:8px solid #43A047;
+    box-shadow:0 8px 20px rgba(46,125,50,.08);
+    color:#14532D;
     padding:25px;
     border-radius:18px;
-    border-left:8px solid #42A5F5;
     height:260px;
     ">
     <h2>📷 Food Recognition</h2>
@@ -162,10 +182,12 @@ with col2:
 
     st.markdown("""
     <div style="
-    background:#234F36;
+    background:white;
+    border-left:8px solid #81C784;
+    box-shadow:0 8px 20px rgba(46,125,50,.08);
+    color:#14532D;
     padding:25px;
     border-radius:18px;
-    border-left:8px solid #66BB6A;
     height:260px;
     ">
     <h2>📊 Dashboard</h2>
@@ -192,7 +214,7 @@ with st.sidebar:
 
     st.markdown("""
     <div style="
-    background:#1565C0;
+    background:linear-gradient(135deg,#43A047,#2E7D32);
     padding:15px;
     border-radius:12px;
     text-align:center;
@@ -212,7 +234,9 @@ with st.sidebar:
 st.markdown("""
 <div style='text-align:center;color:gray;'>
 
-Made with ❤️ using <b>TensorFlow • AI • Streamlit</b>
+Made with ❤️ by Team NutriMind AI
+
+TensorFlow • Firebase • Streamlit • AI
 
 </div>
 """, unsafe_allow_html=True)

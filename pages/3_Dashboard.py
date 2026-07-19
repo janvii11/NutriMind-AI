@@ -18,19 +18,37 @@ if not st.session_state.get("logged_in"):
     st.warning("🔒 Please login first.")
     st.stop()
 load_css()
-
 st.markdown("""
-<h1 style='text-align:center;
-color:#00E5FF;
-font-size:42px;'>
+<div style="
+background:linear-gradient(135deg,#F3FAF3,#E8F5E9,#DDF5D8);
+padding:35px;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(46,125,50,.10);
+margin-bottom:25px;
+">
+
+<h1 style="
+text-align:center;
+color:#14532D;
+font-size:42px;
+font-weight:900;
+">
+
 🥗 NutriMind AI Dashboard
+
 </h1>
 
-<p style='text-align:center;
+<p style="
+text-align:center;
 font-size:18px;
-color:gray;'>
+color:#355E3B;
+">
+
 Track • Analyze • Improve Your Nutrition
+
 </p>
+
+</div>
 """, unsafe_allow_html=True)
 
 st.divider()
@@ -76,14 +94,17 @@ if not df.empty:
 
         st.markdown(f"""
         <div style="
-            background:linear-gradient(135deg,#ff6a00,#ee0979);
+            background:white;
+            border-left:8px solid #43A047;
             padding:25px;
             border-radius:18px;
-            color:white;
+            color:#14532D;
             text-align:center;
             box-shadow:0px 8px 20px rgba(0,0,0,0.3);
         ">
-            <h4>🔥 Total Calories</h4>
+            <h4 style="color:#43A047;">
+            🔥 Total Calories
+            </h4>
             <h1>{total_calories:.0f}</h1>
         </div>
         """, unsafe_allow_html=True)
@@ -92,10 +113,11 @@ if not df.empty:
 
         st.markdown(f"""
         <div style="
-            background:linear-gradient(135deg,#00c6ff,#0072ff);
+            background:white;
+            border-left:8px solid #81C784;
             padding:25px;
             border-radius:18px;
-            color:white;
+            color:#14532D;
             text-align:center;
             box-shadow:0px 8px 20px rgba(0,0,0,0.3);
         ">
@@ -149,7 +171,10 @@ if not df.empty:
     fig.update_layout(
         xaxis_title="Date",
         yaxis_title="Calories",
-        template="plotly_dark",
+        template="plotly_white",
+        paper_bgcolor="white",
+        plot_bgcolor="white",
+        font_color="#14532D",
         height=420
     )
 
@@ -166,7 +191,14 @@ if not df.empty:
         names="Meal Type",
         values="Count",
         hole=0.60,
-        title="🥧 Meal Distribution"
+        title="🥧 Meal Distribution",
+        color_discrete_sequence=[
+        "#2E7D32",
+        "#43A047",
+        "#66BB6A",
+        "#81C784",
+        "#A5D6A7"
+        ],
     )
 
     fig2.update_traces(
@@ -177,7 +209,7 @@ if not df.empty:
     )
 
     fig2.update_layout(
-        template="plotly_dark",
+        template="plotly_white",
         height=420,
         legend_title="Meal Type"
     )
@@ -203,30 +235,34 @@ if not df.empty:
     meals = len(today_df)
 
     cards = [
-        ("🍽 Meals", meals, "#667eea", "#764ba2"),
-        ("🔥 Calories", f"{calories:.0f}", "#ff6a00", "#ee0979"),
-        ("💪 Protein", f"{protein:.0f} g", "#11998e", "#38ef7d"),
-        ("🍚 Carbs", f"{carbs:.0f} g", "#36D1DC", "#5B86E5"),
-        ("🥑 Fat", f"{fat:.0f} g", "#f7971e", "#ffd200")
-    ]
 
+    ("🍽️ Meals", meals),
+
+    ("🔥 Calories", f"{calories:.0f}"),
+
+    ("💪 Protein", f"{protein:.0f} g"),
+
+    ("🍚 Carbs", f"{carbs:.0f} g"),
+
+    ("🥑 Fat", f"{fat:.0f} g")
+
+    ]
     cols = st.columns(5)
 
-    for col, (title, value, c1, c2) in zip(cols, cards):
+    for col, (title, value) in zip(cols, cards):
 
         with col:
 
             st.markdown(f"""
             <div style="
-                background:linear-gradient(135deg,{c1},{c2});
-                padding:18px;
-                border-radius:16px;
-                color:white;
-                text-align:center;
-                box-shadow:0 6px 15px rgba(0,0,0,.25);
-            ">
-                <h5>{title}</h5>
-                <h2>{value}</h2>
+                background:white;padding:18px;border-radius:18px;text-align:center;border:1px solid #DDF5D8;box-shadow:0 6px 15px rgba(46,125,50,.08);">
+                <h5 style="color:#43A047;margin-bottom:10px;">
+                {title}
+                </h5>
+                <h2 style="color:#14532D;">
+                {value}
+                </h2>
+
             </div>
             """, unsafe_allow_html=True)
     st.divider()
@@ -269,9 +305,11 @@ if not df.empty:
 
         fig.update_layout(
             height=260,
-            margin=dict(l=20, r=20, t=40, b=20)
+            margin=dict(l=20, r=20, t=40, b=20),
+        
+            paper_bgcolor="white",
+            font_color="#14532D",
         )
-
         return fig
 
 
