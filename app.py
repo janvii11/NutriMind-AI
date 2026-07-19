@@ -117,7 +117,7 @@ if profile:
 
     with c4:
         remaining = max(
-            profile.get("bmr", 1800) - today_calories
+            profile.get("bmr", 1800) - today_calories,0
         )
 
         st.metric(
